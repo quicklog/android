@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:gravity="center_horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/procedure"
+		android:text="@string/procedure"
+		android:padding="5dp"
+		android:textAppearance="@android:style/TextAppearance.Large"
+		android:layout_margin="10dp"
+		android:textStyle="bold"
+		android:gravity="center_horizontal"
+	/>
+
+     <EditText 
+         android:focusable="true"
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="5"
+        android:scrollbars="vertical"
+        android:inputType="textMultiLine"
+        android:layout_margin="10dp"/>
+    
+       <RatingBar
+        android:numStars="5"
+        android:rating="3"
+        android:max="5"
+        android:progress="3"
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
+       <NumberPicker
+           android:orientation="horizontal"
+           android:id="@+id/numberPicker"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+            />
+       
+       <Button
+           android:id="@+id/add"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="10dp"
+           android:onClick="addProcedure"
+           android:text="@string/add" />
+       
+</LinearLayout>
