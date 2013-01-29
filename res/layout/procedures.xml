@@ -12,7 +12,8 @@
         android:focusable="true"
         android:inputType="text"
         android:imeOptions="actionSearch"
-        android:queryHint="@string/searchHint" />
+        android:queryHint="@string/search_hint"
+        android:iconifiedByDefault="false"/>
 
     <Button
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
         android:text="@string/addNew" />
 
     <ListView
-        android:id="@+id/procedures"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

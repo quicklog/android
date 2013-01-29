@@ -10,7 +10,7 @@
 	<string name="addNew">add new procedure</string>
 	<string name="add">Add</string>
 	<string name="procedure">procedure</string>
-	<string name="searchHint">search for existing procedures</string>
+	<string name="search_hint">search for existing procedures</string>
 	<string name="attempts">number of attempts</string>
 	
 	<string name="stats">stats</string>

@@ -3,10 +3,12 @@ package com.nhs.quicklog.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.text.TextUtils;
+
 import com.google.inject.Singleton;
 
 @Singleton
- public class ProceduresNames {
+public class ProceduresNames {
 
 	private ArrayList<String> items;
 
@@ -26,7 +28,23 @@ import com.google.inject.Singleton;
 	public List<String> get() {
 		return this.items;
 	}
-	
+
+	public List<String> getStartedWith(String pattern) {
+
+		if (TextUtils.isEmpty(pattern)) {
+			return this.items;
+		}
+
+		ArrayList<String> mactahedItems = new ArrayList<String>();
+		for (String item : items) {
+			if (item.toLowerCase().startsWith(pattern.toLowerCase())) {
+				mactahedItems.add(item);
+			}
+		}
+
+		return mactahedItems;
+	}
+
 	private void FillItems() {
 		this.items.add("Cannula");
 		this.items.add("Venepuncture");
