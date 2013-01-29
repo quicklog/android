@@ -2,55 +2,109 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:gravity="center_horizontal"
-    android:padding="10dp">
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <TextView
+        android:id="@+id/procedure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/procedure"
-		android:text="@string/procedure"
-		android:padding="5dp"
-		android:textAppearance="@android:style/TextAppearance.Large"
-		android:layout_margin="10dp"
-		android:textStyle="bold"
-		android:gravity="center_horizontal"
-	/>
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:text="@string/procedure"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textStyle="bold" />
 
-     <EditText 
-         android:focusable="true"
+    <EditText
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minLines="5"
-        android:scrollbars="vertical"
+        android:layout_margin="10dp"
+        android:focusable="true"
         android:inputType="textMultiLine"
-        android:layout_margin="10dp"/>
-    
-       <RatingBar
-        android:numStars="5"
-        android:rating="3"
-        android:max="5"
-        android:progress="3"
+        android:minLines="3"
+        android:scrollbars="vertical" />
+
+    <RatingBar
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:max="5"
+        android:numStars="5"
+        android:progress="3"
+        android:rating="3" />
 
-       <NumberPicker
-           android:orientation="horizontal"
-           android:id="@+id/numberPicker"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        
+        <Button
+            android:id="@+id/minus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="minus"
+            android:text="@string/minus" />
+        
+        <EditText
+            android:id="@+id/attempts"
+            android:layout_width="0dp"
+            android:minWidth="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="@string/defaultAttemps"
+            android:inputType="number"
+            android:gravity="center_horizontal"
             />
-       
-       <Button
-           android:id="@+id/add"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_margin="10dp"
-           android:onClick="addProcedure"
-           android:text="@string/add" />
-       
+        
+        <Button
+            android:id="@+id/plus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="plus"
+            android:text="@string/plus" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/stats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="stats"
+            android:text="@string/stats" />
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="addProcedure"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/target"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="target"
+            android:text="@string/target" />
+    </LinearLayout>
+
 </LinearLayout>

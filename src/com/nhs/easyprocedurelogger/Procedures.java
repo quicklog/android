@@ -4,6 +4,7 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +33,9 @@ public class Procedures extends RoboActivity {
 				android.R.layout.simple_list_item_1, proceduresNames.get());
 
 		proceduresList.setAdapter(adapter);
-
+		
+		this.searchView.setIconified(false);
+		
 		proceduresList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -46,6 +49,11 @@ public class Procedures extends RoboActivity {
 
 	public void addProcedure(View view) {
 		String procedure = this.searchView.getQuery().toString();
+		
+		if (TextUtils.isEmpty(procedure)) {
+			return;
+		}
+		
 		proceduresNames.Add(procedure);
 		this.addLog(procedure);
 	}

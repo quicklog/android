@@ -8,6 +8,7 @@ import java.util.UUID;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ public class QuickLog extends RoboActivity {
 	RatingBar rating;
 	@InjectView(R.id.comment)
 	EditText comment;
+	@InjectView(R.id.attempts)
+	EditText attempts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +43,37 @@ public class QuickLog extends RoboActivity {
 	public void addProcedure(View view) throws URISyntaxException {
 		Post post = new Post();
 		post.execute(this, this.getLog());
-        Toast.makeText(getApplicationContext(), "procedure comment added", Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), "procedure comment added",
+				Toast.LENGTH_LONG).show();
 		this.startProcedures();
+	}
+
+	public void stats(View view) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("http://quicklog.herokuapp.com/me/procedures/all"));
+		startActivity(intent);
+	}
+
+	public void target(View view) {
+	}
+
+	public void minus(View view) {
+		int value = this.getAttempts();
+
+		--value;
+
+		if (value <= 0) {
+			return;
+		}
+
+		this.attempts.setText(String.format("%d", value));
+	}
+
+	public void plus(View view) {
+		int value = this.getAttempts();
+		++value;
+
+		this.attempts.setText(String.format("%d", value));
 	}
 
 	public void startProcedures() {
@@ -49,14 +81,24 @@ public class QuickLog extends RoboActivity {
 		startActivity(intent);
 	}
 
+	private int getAttempts() {
+		try {
+			String value = this.attempts.getText().toString();
+			return Integer.parseInt(value);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
 	private String getLog() {
 		long time = new Date().getTime();
 		Items items = new Items();
 		Item item = new Item();
+		item.setAttempts(Integer.parseInt(attempts.getText().toString()));
 		ArrayList<String> tags = new ArrayList<String>();
 		tags.add("tag1");
 		item.setComment(this.comment.getText().toString());
-		item.setRating((int)this.rating.getRating());
+		item.setRating((int) this.rating.getRating());
 		item.setTimestamp(String.valueOf(time));
 		item.setTags(tags);
 		item.setId(UUID.randomUUID());
