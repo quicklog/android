@@ -11,8 +11,7 @@
 	<string name="add">Add</string>
 	<string name="procedure">procedure</string>
 	<string name="search_hint">search for existing procedures</string>
-	<string name="attempts">number of attempts</string>
-	
+	<string name="attempts">Attempts:</string>
 	<string name="stats">stats</string>
 	<string name="target">target</string>
 	<string name="minus">-</string>

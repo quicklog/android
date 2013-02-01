@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.nhs.quicklog.data.Item;
 import com.nhs.quicklog.data.Items;
 
-public class QuickLog extends RoboActivity {
+public class Comment extends RoboActivity {
 
 	@InjectView(R.id.procedure)
 	TextView procedure;
