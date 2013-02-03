@@ -8,11 +8,13 @@ import java.io.InputStreamReader;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.nhs.quicklog.data.QuickLog;
 
@@ -42,82 +45,94 @@ public class Procedures extends RoboActivity {
 		this.addStaticProcedures();
 		this.FillItems();
 
-		// this.searchView.setOnQueryTextListener(new OnQueryTextListener() {
-		//
-		// @Override
-		// public boolean onQueryTextSubmit(String query) {
-		// //doMySearch(query);
-		// return true;
-		// }
-		//
-		// @Override
-		// public boolean onQueryTextChange(String newText) {
-		// // doMySearch(newText);
-		// return true;
-		// }
-		// });
-		//
-		
+		this.searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				doMySearch(query);
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				doMySearch(newText);
+				return true;
+			}
+		});
+
 		proceduresList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> list, View view,
 					int position, long id) {
 				Cursor cursor = (Cursor) list.getAdapter().getItem(position);
-				String procedure =  cursor.getString(QuickLog.Procedures.COLUMN_INDEX_TITLE);
-				
-				ContentValues values = new ContentValues();
-				values.put(QuickLog.Procedures.COLUMN_NAME_NAME, cursor.getString(QuickLog.Procedures.COLUMN_INDEX_TITLE));
-				values.put(QuickLog.Procedures.COLUMN_NAME_HITS, cursor.getInt(QuickLog.Procedures.COLUMN_INDEX_HITS) + 1);
-				getContentResolver().update(Uri.parse(
-						QuickLog.Procedures.CONTENT_ID_URI_BASE.toString() + cursor.getInt(0)),
-						values, null, null);
-				addComment(procedure);
+				String procedure = cursor
+						.getString(QuickLog.Procedures.COLUMN_INDEX_TITLE);
+
+				addComment(procedure,
+						cursor.getInt(QuickLog.Procedures.COLUMN_INDEX_ID),
+						cursor.getInt(QuickLog.Procedures.COLUMN_INDEX_HITS));
 			}
 		});
 	}
 
 	private void doMySearch(String query) {
-
+		ContentValues values = new ContentValues();
+		values.put(QuickLog.Procedures.COLUMN_NAME_NAME, query);
+		
+		Cursor cursor = getContentResolver().query(
+				Uri.parse(QuickLog.Procedures.CONTENT_ID_URI_BASE.toString()
+						+ query), QuickLog.Procedures.PROJECTION, null, null,
+				null);
+		
+		this.setListCursor(cursor);
 	}
 
 	private void FillItems() {
-		@SuppressWarnings("deprecation")
-		Cursor cursor = managedQuery(QuickLog.Procedures.CONTENT_URI,
+		CursorLoader cursorLoader = new CursorLoader(this, QuickLog.Procedures.CONTENT_URI,
 				QuickLog.Procedures.PROJECTION, null, null,
 				QuickLog.Procedures.DEFAULT_SORT_ORDER);
+		
+		this.setListCursor(cursorLoader.loadInBackground());
+	}
 
+	private void setListCursor(Cursor cursor) {
 		String[] dataColumns = { QuickLog.Procedures.COLUMN_NAME_NAME };
 
 		int[] viewIDs = { android.R.id.text1 };
 
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_1, cursor, dataColumns,
-				viewIDs);
+				viewIDs, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-		proceduresList.setAdapter(adapter);
+		proceduresList.setAdapter(adapter);	
 	}
-
+	
 	public void addProcedure(View view) {
 		String procedure = this.searchView.getQuery().toString();
-		AddProcedureEntry(procedure, 1);
-		this.addComment(procedure);
-	}
-
-	private void AddProcedureEntry(String procedure, int hits) {
 		if (TextUtils.isEmpty(procedure)) {
 			return;
 		}
 
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(QuickLog.Procedures.COLUMN_NAME_NAME, procedure);
-		initialValues.put(QuickLog.Procedures.COLUMN_NAME_HITS, hits);
-		getContentResolver().insert(QuickLog.Procedures.CONTENT_URI,
-				initialValues);
+		int id = AddProcedureEntry(procedure);
+		this.addComment(procedure, id, 0);
 	}
 
-	private void addComment(String procedure) {
+	private int AddProcedureEntry(String procedure) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(QuickLog.Procedures.COLUMN_NAME_NAME, procedure);
+		initialValues.put(QuickLog.Procedures.COLUMN_NAME_HITS, 0);
+		Uri uri = getContentResolver().insert(QuickLog.Procedures.CONTENT_URI,
+				initialValues);
+
+		return Integer.valueOf(uri.getPathSegments().get(
+				QuickLog.Procedures.PROCEDURE_ID_PATH_POSITION));
+	}
+
+	private void addComment(String procedure, int id, int hits) {
 		Intent intent = new Intent(this, Comment.class);
 		intent.putExtra("procedure", procedure);
+		intent.putExtra("id", id);
+		intent.putExtra("hits", hits);
 		startActivity(intent);
 	}
 
@@ -146,7 +161,7 @@ public class Procedures extends RoboActivity {
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				AddProcedureEntry(line, 0);
+				AddProcedureEntry(line);
 			}
 		} finally {
 			reader.close();
@@ -160,7 +175,7 @@ public class Procedures extends RoboActivity {
 				new String[] { "count(*) AS count" }, null, null, null);
 
 		countCursor.moveToFirst();
-		int count =  countCursor.getInt(0);
+		int count = countCursor.getInt(0);
 		countCursor.close();
 		return count;
 	}

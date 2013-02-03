@@ -24,6 +24,8 @@ public class ProceduresProvider extends ContentProvider {
 	private static final int PROCEDURES = 1;
 
 	private static final int PROCEDURE_ID = 2;
+	
+	private static final int PROCEDURE_NAME = 3;
 
 	private static final UriMatcher sUriMatcher;
 
@@ -34,6 +36,8 @@ public class ProceduresProvider extends ContentProvider {
 		sUriMatcher.addURI(QuickLog.AUTHORITY, "procedures", PROCEDURES);
 
 		sUriMatcher.addURI(QuickLog.AUTHORITY, "procedures/#", PROCEDURE_ID);
+		
+		sUriMatcher.addURI(QuickLog.AUTHORITY, "procedures/*", PROCEDURE_NAME);
 
 		ProceduresProjectionMap = new HashMap<String, String>();
 
@@ -58,6 +62,24 @@ public class ProceduresProvider extends ContentProvider {
 	}
 
 	@Override
+	public String getType(Uri uri) {
+		switch (sUriMatcher.match(uri)) {
+
+		case PROCEDURES:
+			return QuickLog.Procedures.CONTENT_TYPE;
+
+		case PROCEDURE_ID:
+			return QuickLog.Procedures.CONTENT_ITEM_TYPE;
+
+		case PROCEDURE_NAME:
+			return QuickLog.Procedures.CONTENT_ITEM_TYPE;
+			
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+	}
+	
+	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 
@@ -77,6 +99,14 @@ public class ProceduresProvider extends ContentProvider {
 							QuickLog.Procedures.PROCEDURE_ID_PATH_POSITION));
 			break;
 
+		case PROCEDURE_NAME:
+			qb.setProjectionMap(ProceduresProjectionMap);
+			qb.appendWhere(QuickLog.Procedures.COLUMN_NAME_NAME
+					+ " like '"
+					+ uri.getPathSegments().get(
+							QuickLog.Procedures.PROCEDURE_ID_PATH_POSITION) + "%'");
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -95,21 +125,6 @@ public class ProceduresProvider extends ContentProvider {
 
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
-	}
-
-	@Override
-	public String getType(Uri uri) {
-		switch (sUriMatcher.match(uri)) {
-
-		case PROCEDURES:
-			return QuickLog.Procedures.CONTENT_TYPE;
-
-		case PROCEDURE_ID:
-			return QuickLog.Procedures.CONTENT_ITEM_TYPE;
-
-		default:
-			throw new IllegalArgumentException("Unknown URI " + uri);
-		}
 	}
 
 	public Uri insert(Uri uri, ContentValues initialValues) {

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.nhs.quicklog.data.Item;
 import com.nhs.quicklog.data.Items;
+import com.nhs.quicklog.data.QuickLog;
 
 public class Comment extends RoboActivity {
 
@@ -31,21 +33,40 @@ public class Comment extends RoboActivity {
 	@InjectView(R.id.attempts)
 	EditText attempts;
 
+	private String procedureName;
+	private int procedureId;
+	private int procedureHits;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.log);
-		String procedureName = this.getIntent()
+		this.procedureName = this.getIntent()
 				.getCharSequenceExtra("procedure").toString();
-		procedure.setText(procedureName);
+		this.procedureId = this.getIntent().getIntExtra("id", 0);
+		this.procedureHits = this.getIntent().getIntExtra("hits", 0);
+		procedure.setText(this.procedureName);
 	}
 
 	public void addProcedure(View view) throws URISyntaxException {
+		this.incrementProcedureHits();
+		
 		Post post = new Post();
 		post.execute(this, this.getLog());
+		
 		Toast.makeText(getApplicationContext(), "procedure comment added",
 				Toast.LENGTH_LONG).show();
+		
 		this.startProcedures();
+	}
+
+	private void incrementProcedureHits() {
+		ContentValues values = new ContentValues();
+		values.put(QuickLog.Procedures.COLUMN_NAME_NAME, this.procedureName);
+		values.put(QuickLog.Procedures.COLUMN_NAME_HITS, this.procedureHits + 1);
+		getContentResolver().update(Uri.parse(
+				QuickLog.Procedures.CONTENT_ID_URI_BASE.toString() + this.procedureId),
+				values, null, null);
 	}
 
 	public void stats(View view) {
