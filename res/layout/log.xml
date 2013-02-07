@@ -1,115 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/procedure"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:text="@string/procedure"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <EditText
-        android:id="@+id/comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:focusable="true"
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:scrollbars="vertical" />
-
-    <RatingBar
-        android:id="@+id/rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:max="5"
-        android:numStars="5"
-        android:progress="3"
-        android:rating="3" />
-
-    <TextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/attempts"
-        />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        
-        <Button
-            android:id="@+id/minus"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/procedure"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="minus"
-            android:text="@string/minus" />
-        
-        <EditText
-            android:id="@+id/attempts"
-            android:layout_width="0dp"
-            android:minWidth="50dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="@string/defaultAttemps"
-            android:inputType="number"
             android:gravity="center_horizontal"
-            />
-        
-        <Button
-            android:id="@+id/plus"
-            android:layout_width="0dp"
+            android:padding="5dp"
+            android:text="@string/procedure"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="plus"
-            android:text="@string/plus" />
+            android:focusable="true"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:gravity="left|top"/>
+
+        <RatingBar
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:max="5"
+            android:numStars="5"
+            android:progress="3"
+            android:rating="3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:text="@string/attempts" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/minus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="minus"
+                android:text="@string/minus" />
+
+            <EditText
+                android:id="@+id/attempts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:minWidth="50dp"
+                android:text="@string/defaultAttemps" />
+
+            <Button
+                android:id="@+id/plus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="plus"
+                android:text="@string/plus" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/stats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="stats"
+                android:text="@string/stats" />
+
+            <Button
+                android:id="@+id/add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="addProcedure"
+                android:text="@string/add" />
+
+            <Button
+                android:id="@+id/target"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="target"
+                android:text="@string/target" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/stats"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="stats"
-            android:text="@string/stats" />
-
-        <Button
-            android:id="@+id/add"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="addProcedure"
-            android:text="@string/add" />
-
-        <Button
-            android:id="@+id/target"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="target"
-            android:text="@string/target" />
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

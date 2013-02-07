@@ -8,22 +8,23 @@ import java.io.InputStreamReader;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 
 import com.nhs.quicklog.data.QuickLog;
 
@@ -32,7 +33,7 @@ public class Procedures extends RoboActivity {
 	private static final String TAG = "Procedures";
 
 	@InjectView(R.id.search)
-	SearchView searchView;
+	EditText searchView;
 	@InjectView(R.id.list)
 	ListView proceduresList;
 
@@ -40,26 +41,26 @@ public class Procedures extends RoboActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.procedures);
-		searchView.setSubmitButtonEnabled(true);
-
+		
 		this.addStaticProcedures();
-		this.FillItems();
-
-		this.searchView.setOnQueryTextListener(new OnQueryTextListener() {
-
+		
+		this.searchView.addTextChangedListener(new TextWatcher() {
+			
 			@Override
-			public boolean onQueryTextSubmit(String query) {
-				doMySearch(query);
-				return true;
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 			}
-
+			
 			@Override
-			public boolean onQueryTextChange(String newText) {
-				doMySearch(newText);
-				return true;
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				doMySearch(s.toString());
 			}
 		});
-
+		
 		proceduresList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> list, View view,
@@ -108,7 +109,7 @@ public class Procedures extends RoboActivity {
 	}
 	
 	public void addProcedure(View view) {
-		String procedure = this.searchView.getQuery().toString();
+		String procedure = this.searchView.getText().toString();
 		if (TextUtils.isEmpty(procedure)) {
 			return;
 		}
@@ -137,15 +138,16 @@ public class Procedures extends RoboActivity {
 	}
 
 	private void addStaticProcedures() {
-		new Thread(new Runnable() {
+		proceduresList.post(new Runnable() {
 			public void run() {
 				try {
 					loadProcesures();
+					FillItems();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			}
-		}).start();
+		});
 	}
 
 	private void loadProcesures() throws IOException {

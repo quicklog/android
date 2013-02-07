@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <SearchView
+    <EditText
         android:id="@+id/search"
         android:minWidth="200dp"
         android:layout_width="match_parent"
@@ -12,8 +12,8 @@
         android:focusable="true"
         android:inputType="text"
         android:imeOptions="actionSearch"
-        android:queryHint="@string/search_hint"
-        android:iconifiedByDefault="false"/>
+        android:hint="@string/search_hint"
+        android:drawableLeft="@android:drawable/ic_menu_search"/>
 
     <Button
         android:layout_width="match_parent"

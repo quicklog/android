@@ -115,7 +115,7 @@ public class Comment extends RoboActivity {
 		long time = new Date().getTime();
 		Items items = new Items();
 		Item item = new Item();
-		item.setAttempts(Integer.parseInt(attempts.getText().toString()));
+		item.setAttempts(this.getAttemptsValue());
 		ArrayList<String> tags = new ArrayList<String>();
 		tags.add("tag1");
 		item.setComment(this.comment.getText().toString());
@@ -125,5 +125,17 @@ public class Comment extends RoboActivity {
 		item.setId(UUID.randomUUID());
 		items.add(item);
 		return new Gson().toJson(items);
+	}
+
+	private int getAttemptsValue() {
+		try
+		{
+			return Integer.parseInt(attempts.getText().toString());
+		}
+		catch(Exception e) {
+		
+		}
+		
+		return 1;
 	}
 }
