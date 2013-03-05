@@ -11,7 +11,8 @@ public final class QuickLog {
 
     public static final class Procedures implements BaseColumns {
 
-        private Procedures() {}
+        private Procedures() {
+        }
 
         public static final String TABLE_NAME = "procedures";
 
@@ -23,13 +24,13 @@ public final class QuickLog {
 
         public static final int PROCEDURE_ID_PATH_POSITION = 1;
 
-        public static final Uri CONTENT_URI =  Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURES);
+        public static final Uri CONTENT_URI = Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURES);
 
         public static final Uri CONTENT_ID_URI_BASE
-            = Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURE_MATCH);
+                = Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURE_MATCH);
 
-		public static final Uri CONTENT_ID_URI_PATTERN
-            = Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURE_MATCH + "/#");
+        public static final Uri CONTENT_ID_URI_PATTERN
+                = Uri.parse(SCHEME + AUTHORITY + PATH_PROCEDURE_MATCH + "/#");
 
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.quicklog.procedure";
 
@@ -39,18 +40,18 @@ public final class QuickLog {
 
         public static final String COLUMN_NAME_NAME = "name";
 
-		public static final String COLUMN_NAME_CREATE_DATE = "created";
-		
-		public static final String COLUMN_NAME_HITS = "hits";
-		
-		  public static final String[] PROJECTION = new String[] {
-			  QuickLog.Procedures._ID,
-			  QuickLog.Procedures.COLUMN_NAME_NAME,
-			  QuickLog.Procedures.COLUMN_NAME_HITS,
-	  };
+        public static final String COLUMN_NAME_CREATE_DATE = "created";
 
-	  public static final int COLUMN_INDEX_ID = 0;
-	  public static final int COLUMN_INDEX_TITLE = 1;
-	  public static final int COLUMN_INDEX_HITS = 2;
+        public static final String COLUMN_NAME_HITS = "hits";
+
+        public static final String[] PROJECTION = new String[]{
+                QuickLog.Procedures._ID,
+                QuickLog.Procedures.COLUMN_NAME_NAME,
+                QuickLog.Procedures.COLUMN_NAME_HITS,
+        };
+
+        public static final int COLUMN_INDEX_ID = 0;
+        public static final int COLUMN_INDEX_TITLE = 1;
+        public static final int COLUMN_INDEX_HITS = 2;
     }
 }

@@ -2,57 +2,57 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.nhs.easyprocedurelogger"
           android:versionCode="115"
-          android:versionName="QuickLog" >
+          android:versionName="QuickLog">
 
     <uses-sdk
             android:minSdkVersion="10"
-            android:targetSdkVersion="15" />
+            android:targetSdkVersion="15"/>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
 
         <provider android:name="com.nhs.quicklog.data.ProceduresProvider"
                   android:authorities="com.nhs.quicklog.provider.Procedure"
                   android:exported="false">
-            <grant-uri-permission android:pathPattern=".*" />
+            <grant-uri-permission android:pathPattern=".*"/>
         </provider>
 
         <activity
                 android:name="com.nhs.easyprocedurelogger.Procedures"
-                android:label="@string/app_name" >
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.dir/vnd.quicklog.procedure" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.dir/vnd.quicklog.procedure"/>
             </intent-filter>
         </activity>
         <activity
                 android:name="com.nhs.easyprocedurelogger.Comment"
-                android:label="@string/app_name" >
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <service android:name="com.b2msolutions.reyna.services.StoreService" />
-        <service android:name="com.b2msolutions.reyna.services.ForwardService" />
+        <service android:name="com.b2msolutions.reyna.services.StoreService"/>
+        <service android:name="com.b2msolutions.reyna.services.ForwardService"/>
 
-        <receiver android:name="com.b2msolutions.reyna.receivers.ForwardServiceReceiver" >
+        <receiver android:name="com.b2msolutions.reyna.receivers.ForwardServiceReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
     </application>

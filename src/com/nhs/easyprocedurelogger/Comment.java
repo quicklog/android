@@ -24,119 +24,117 @@ import com.nhs.quicklog.data.QuickLog;
 
 public class Comment extends RoboActivity {
 
-	@InjectView(R.id.procedure)
-	TextView procedure;
-	@InjectView(R.id.rating)
-	RatingBar rating;
-	@InjectView(R.id.comment)
-	EditText comment;
-	@InjectView(R.id.attempts)
-	EditText attempts;
+    @InjectView(R.id.procedure)
+    TextView procedure;
+    @InjectView(R.id.rating)
+    RatingBar rating;
+    @InjectView(R.id.comment)
+    EditText comment;
+    @InjectView(R.id.attempts)
+    EditText attempts;
 
-	private String procedureName;
-	private int procedureId;
-	private int procedureHits;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.log);
-		this.procedureName = this.getIntent()
-				.getCharSequenceExtra("procedure").toString();
-		this.procedureId = this.getIntent().getIntExtra("id", 0);
-		this.procedureHits = this.getIntent().getIntExtra("hits", 0);
-		procedure.setText(this.procedureName);
-	}
+    private String procedureName;
+    private int procedureId;
+    private int procedureHits;
 
-	public void addProcedure(View view) throws URISyntaxException {
-		this.incrementProcedureHits();
-		
-		Post post = new Post();
-		post.execute(this, this.getLog());
-		
-		Toast.makeText(getApplicationContext(), "procedure comment added",
-				Toast.LENGTH_LONG).show();
-		
-		this.startProcedures();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.log);
+        this.procedureName = this.getIntent()
+                .getCharSequenceExtra("procedure").toString();
+        this.procedureId = this.getIntent().getIntExtra("id", 0);
+        this.procedureHits = this.getIntent().getIntExtra("hits", 0);
+        procedure.setText(this.procedureName);
+    }
 
-	private void incrementProcedureHits() {
-		ContentValues values = new ContentValues();
-		values.put(QuickLog.Procedures.COLUMN_NAME_NAME, this.procedureName);
-		values.put(QuickLog.Procedures.COLUMN_NAME_HITS, this.procedureHits + 1);
-		getContentResolver().update(Uri.parse(
-				QuickLog.Procedures.CONTENT_ID_URI_BASE.toString() + this.procedureId),
-				values, null, null);
-	}
+    public void addProcedure(View view) throws URISyntaxException {
+        this.incrementProcedureHits();
 
-	public void stats(View view) {
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("http://quicklog.herokuapp.com/me/procedures/all"));
-		startActivity(intent);
-	}
+        Post post = new Post();
+        post.execute(this, this.getLog());
 
-	public void target(View view) {
-	}
+        Toast.makeText(getApplicationContext(), "procedure comment added",
+                Toast.LENGTH_LONG).show();
 
-	public void minus(View view) {
-		int value = this.getAttempts();
+        this.startProcedures();
+    }
 
-		--value;
+    private void incrementProcedureHits() {
+        ContentValues values = new ContentValues();
+        values.put(QuickLog.Procedures.COLUMN_NAME_NAME, this.procedureName);
+        values.put(QuickLog.Procedures.COLUMN_NAME_HITS, this.procedureHits + 1);
+        getContentResolver().update(Uri.parse(
+                QuickLog.Procedures.CONTENT_ID_URI_BASE.toString() + this.procedureId),
+                values, null, null);
+    }
 
-		if (value <= 0) {
-			return;
-		}
+    public void stats(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://quicklog.herokuapp.com/me/procedures/all"));
+        startActivity(intent);
+    }
 
-		this.attempts.setText(String.format("%d", value));
-	}
+    public void target(View view) {
+    }
 
-	public void plus(View view) {
-		int value = this.getAttempts();
-		++value;
+    public void minus(View view) {
+        int value = this.getAttempts();
 
-		this.attempts.setText(String.format("%d", value));
-	}
+        --value;
 
-	public void startProcedures() {
-		Intent intent = new Intent(this, Procedures.class);
-		startActivity(intent);
+        if (value <= 0) {
+            return;
+        }
+
+        this.attempts.setText(String.format("%d", value));
+    }
+
+    public void plus(View view) {
+        int value = this.getAttempts();
+        ++value;
+
+        this.attempts.setText(String.format("%d", value));
+    }
+
+    public void startProcedures() {
+        Intent intent = new Intent(this, Procedures.class);
+        startActivity(intent);
         this.finish();
-	}
+    }
 
-	private int getAttempts() {
-		try {
-			String value = this.attempts.getText().toString();
-			return Integer.parseInt(value);
-		} catch (Exception e) {
-			return 0;
-		}
-	}
+    private int getAttempts() {
+        try {
+            String value = this.attempts.getText().toString();
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 
-	private String getLog() {
-		long time = new Date().getTime();
-		Items items = new Items();
-		Item item = new Item();
-		item.setAttempts(this.getAttemptsValue());
-		ArrayList<String> tags = new ArrayList<String>();
-		tags.add("tag1");
-		item.setComment(this.comment.getText().toString());
-		item.setRating((int) this.rating.getRating());
-		item.setTimestamp(String.valueOf(time));
-		item.setTags(tags);
-		item.setId(UUID.randomUUID());
-		items.add(item);
-		return new Gson().toJson(items);
-	}
+    private String getLog() {
+        long time = new Date().getTime();
+        Items items = new Items();
+        Item item = new Item();
+        item.setAttempts(this.getAttemptsValue());
+        ArrayList<String> tags = new ArrayList<String>();
+        tags.add("tag1");
+        item.setComment(this.comment.getText().toString());
+        item.setRating((int) this.rating.getRating());
+        item.setTimestamp(String.valueOf(time));
+        item.setTags(tags);
+        item.setId(UUID.randomUUID());
+        items.add(item);
+        return new Gson().toJson(items);
+    }
 
-	private int getAttemptsValue() {
-		try
-		{
-			return Integer.parseInt(attempts.getText().toString());
-		}
-		catch(Exception e) {
-		
-		}
-		
-		return 1;
-	}
+    private int getAttemptsValue() {
+        try {
+            return Integer.parseInt(attempts.getText().toString());
+        } catch (Exception e) {
+
+        }
+
+        return 1;
+    }
 }
