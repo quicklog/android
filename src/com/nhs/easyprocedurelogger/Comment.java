@@ -100,6 +100,7 @@ public class Comment extends RoboActivity {
 	public void startProcedures() {
 		Intent intent = new Intent(this, Procedures.class);
 		startActivity(intent);
+        this.finish();
 	}
 
 	private int getAttempts() {

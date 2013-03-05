@@ -135,6 +135,7 @@ public class Procedures extends RoboActivity {
 		intent.putExtra("id", id);
 		intent.putExtra("hits", hits);
 		startActivity(intent);
+        this.finish();
 	}
 
 	private void addStaticProcedures() {
